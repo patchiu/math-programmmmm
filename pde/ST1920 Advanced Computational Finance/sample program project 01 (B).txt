@@ -1,0 +1,129 @@
+%% sample program project 01 (B)
+%% for approximating the second financial derivative via corrected
+%% finite difference formula on nonuniform and uniform meshes, respectively.
+%% oct 2019 tim sheng hkbu
+
+%% this package is the same as part (A) except the input of finite
+%% difference formula
+
+clear all;            %% always use this command in the beginning
+
+n = 100;               %% try to remove ";" and then see the consequence
+a = rand(n,1);        %% to general n random values in (0, 1)
+x = sort(a);          %% to order the above n values
+
+h0 = 1/(n+1);          %% to calculate the step size h0 for a uniform mesh
+for k = 1:n
+    y(k) = k*h0;       %% to generate a unifrom mesh of n internal points
+end
+
+%% the vectors x and y obtained have n internal mesh points each
+%% and we may need them for plotting our solutions
+
+%% but we need new vectors of (n+2) values each including end points
+%% for calculations (for both nonuniform and unifrom cases)
+
+xx(1) = 0;
+yy(1) = 0;
+f(1) = sin(pi*0);
+g(1) = f(1);
+for k = 1:n
+    xx(k+1) = x(k);
+    yy(k+1) = y(k);
+    f(k+1)  = sin(pi*x(k));
+    g(k+1)  = sin(pi*y(k));
+    ff(k) = -pi*pi*sin(pi*x(k));    %% true derivative on nonuniform mesh
+    gg(k) = -pi*pi*sin(pi*y(k));    %% true derivative on uniform mesh
+end
+xx(n+2) = 1;
+yy(n+2) = 1;
+f(n+2) = sin(pi*1);
+g(n+2) = f(n+2);
+
+figure(1)
+plot(xx,f)
+xlabel('x')
+ylabel('f(x)')
+title('my data on non-uniform mesh')
+grid on
+
+figure(2)
+plot(yy,g)
+xlabel('x')
+ylabel('f(x)')
+title('my data on uniform mesh')
+grid on
+
+for k = 2:(n+2)                    %% why the index starts at 2 and ends at n+2?
+    h(k) = xx(k) - xx(k-1);        %% -- because xx(1) is the left-end position.
+end                                %% to generate n+1 nonunifrom mesh steps now!
+
+for k = 2:(n+1)
+    tmp = h(k)*f(k+1)-(h(k+1)+h(k))*f(k)+h(k+1)*f(k-1);
+    fbnu(k) = 2*tmp/h(k+1)/h(k)/(h(k+1)+h(k));
+    tmp = g(k+1) - 2*g(k) + g(k-1);
+    fbun(k) = tmp/h0/h0;
+end
+
+for k = 1:n
+    fbnu2(k) = fbnu(k+1);
+    fbun2(k) = fbun(k+1);
+end
+
+figure(3)
+plot(x,fbnu2,'linewidth',1.5)
+hold on
+plot(x,ff,'r:','linewidth',1.5)
+xlabel('x')
+ylabel('D^2 f(x)')
+title('my corrected non-uniform case')
+grid on
+hold off
+
+figure(4)
+plot(y,fbun2,'linewidth',1.5)
+hold on
+plot(y,gg,'r:','linewidth',1.5)
+xlabel('x')
+ylabel('D^2 f(x)')
+title('my corrected uniform case')
+grid on
+hold off
+
+%% Now, can we see the errors?
+%% let's explore the absolute errors!
+
+errnu = abs(fbnu2 - ff);
+errun = abs(fbun2 - gg);
+
+
+figure(5)
+plot(x,errnu,'g:','linewidth',1.5)
+xlabel('x')
+ylabel('absolute error')
+title('my corrected non-uniform case')
+grid on
+
+figure(6)
+plot(y,errun,'g:','linewidth',1.5)
+xlabel('x')
+ylabel('absolute error')
+title('my corrected uniform case')
+grid on
+
+%% we use the logrithmic scale in y-direction for error nonuniform:
+
+figure(7)
+semilogy(x,errnu,'r:','linewidth',1.5)
+xlabel('x')
+ylabel('absolute error in log scale')
+title('my corrected non-uniform case')
+grid on
+
+
+
+
+
+
+%% end of experiment
+%%

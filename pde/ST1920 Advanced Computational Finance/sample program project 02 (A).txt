@@ -1,0 +1,194 @@
+%% sample program project 02 (A)
+%% for solving an initial value problem by implicit (backward) Euler
+%% finite difference method on uniform meshes only. In this program, we
+%% let cfl be 0.25, 0.5 and 1 to view solution evolutions and terminal
+%% solution at the maturity time T = 1.
+%% nov 2019 tim sheng baylor/hkbu
+
+%%  ========   ========   ======== TEST 01: CFL = 0.50
+
+clear all;
+h = 0.1;
+NS = 10;
+
+cfl = 0.5;
+
+ta = cfl*h*h;
+N = 1/ta
+
+for k = 1:NS
+    xxx(k) = k*h;
+    a(k,k) = -2*cfl;
+    u(k,1) = sin(k*h*pi);
+end
+for j = 1:NS
+        u00(j) = u(j,1);
+end
+    u0 = u00';
+    vvv(1) = max(u0);
+    ttt(1) = 0;
+    
+for k = 1:(NS-1)
+    a(k,k+1) = cfl;
+    a(k+1,k) = cfl;
+end
+    b = eye(NS) - cfl*a;
+
+for kk = 2:N
+    u1 =  linsolve(b,u0); 
+    for j = 1:NS
+        u(j,kk) = u1(j);
+    end
+    u0 = u1;
+    vvv(kk) = max(u0);
+    ttt(kk) = ttt(kk-1) + ta;
+end
+
+figure(11)
+plot(ttt,vvv)
+xlabel('time t')
+ylabel('max option price u')
+title('Maximal Price Profile v. Time')
+grid on
+print -depsc d:\users\matlab\proj2-11
+
+figure(12)
+mesh(ttt,xxx,u)
+xlabel('time t')
+ylabel('value s')
+zlabel('option price u')
+print -depsc d:\users\matlab\proj2-12
+
+figure(13)
+plot(xxx,u1)
+xlabel('value s')
+ylabel('option price u')
+title('Terminal Price Profile (cfl = 0.50; T=1)')
+grid on
+print -depsc d:\users\matlab\proj2-13
+
+
+%%  ========   ========   ======== TEST 02: CFL = 0.25
+
+clear all;
+h = 0.1;
+NS = 10;
+
+cfl = 0.25;
+
+ta = cfl*h*h;
+N = 1/ta
+
+for k = 1:NS
+    xxx(k) = k*h;
+    a(k,k) = -2*cfl;
+    u(k,1) = sin(k*h*pi);
+end
+for j = 1:NS
+        u00(j) = u(j,1);
+end
+    u0 = u00';
+    vvv(1) = max(u0);
+    ttt(1) = 0;
+    
+for k = 1:(NS-1)
+    a(k,k+1) = cfl;
+    a(k+1,k) = cfl;
+end
+    b = eye(NS) - cfl*a;
+
+for kk = 2:N
+    u1 =  linsolve(b,u0); 
+    for j = 1:NS
+        u(j,kk) = u1(j);
+    end
+    u0 = u1;
+    vvv(kk) = max(u0);
+    ttt(kk) = ttt(kk-1) + ta;
+end
+
+figure(21)
+plot(ttt,vvv)
+xlabel('time t')
+ylabel('max option price u')
+title('Maximal Price Profile v. Time')
+grid on
+print -depsc d:\users\matlab\proj2-21
+
+figure(22)
+mesh(ttt,xxx,u)
+xlabel('time t')
+ylabel('value s')
+zlabel('option price u')
+print -depsc d:\users\matlab\proj2-22
+
+figure(23)
+plot(xxx,u1)
+xlabel('value s')
+ylabel('option price u')
+title('Terminal Price Profile (cfl = 0.25; T=1)')
+grid on
+print -depsc d:\users\matlab\proj2-23
+
+
+%%  ========   ========   ======== TEST 03: CFL = 1.00
+
+clear all;
+h = 0.1;
+NS = 10;
+
+cfl = 1.0;
+
+ta = cfl*h*h;
+N = 1/ta
+
+for k = 1:NS
+    xxx(k) = k*h;
+    a(k,k) = -2*cfl;
+    u(k,1) = sin(k*h*pi);
+end
+for j = 1:NS
+        u00(j) = u(j,1);
+end
+    u0 = u00';
+    vvv(1) = max(u0);
+    ttt(1) = 0;
+    
+for k = 1:(NS-1)
+    a(k,k+1) = cfl;
+    a(k+1,k) = cfl;
+end
+    b = eye(NS) - cfl*a;
+
+for kk = 2:N
+    u1 =  linsolve(b,u0); 
+    for j = 1:NS
+        u(j,kk) = u1(j);
+    end
+    u0 = u1;
+    vvv(kk) = max(u0);
+    ttt(kk) = ttt(kk-1) + ta;
+end
+
+figure(31)
+plot(ttt,vvv)
+xlabel('time t')
+ylabel('max option price u')
+title('Maximal Price Profile v. Time')
+grid on
+print -depsc d:\users\matlab\proj2-31
+
+figure(32)
+mesh(ttt,xxx,u)
+xlabel('time t')
+ylabel('value s')
+zlabel('option price u')
+print -depsc d:\users\matlab\proj2-32
+
+figure(33)
+plot(xxx,u1)
+xlabel('value s')
+ylabel('option price u')
+title('Terminal Price Profile (cfl = 1.0; T=1)')
+grid on
+print -depsc d:\users\matlab\proj2-33

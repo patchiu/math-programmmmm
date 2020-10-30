@@ -1,0 +1,161 @@
+%% sample program 003
+%% for example on pages 53-54, Iserles' textbook (edition 2)
+%% tim sheng, oct 2019 hkbu
+
+clear all;
+
+a0 = 1;
+b0 = 1;
+h = 1/10;
+aa = 1-100*h;
+bb = 1-h/10;
+v = [1 1; 0 999/10];
+vv = inv(v);
+y0 = [1; -1];
+
+nn = 20;
+
+for n = 1:nn
+   time = n*h;
+   a0 = a0*aa;
+   b0 = b0*bb;
+   cc = [ exp(-100*time) 0; 0 exp(-time/10)];
+   dd = [a0 0; 0 b0];
+
+   true = v*cc*vv*y0;
+   appx = v*dd*vv*y0;
+   err1 = true - appx;
+   err(n) = sqrt(err1(1)*err1(1) + err1(2)*err1(2));
+   err001(n) = abs(err1(1));
+   err002(n) = abs(err1(2));
+   ttt(n) = time;
+end
+
+figure(1)
+plot(ttt,err,'r:','linewidth',1.5)
+xlabel('t')
+ylabel('absolute error')
+title('error profile due to the stiffness; h = 1/10')
+grid on
+print -depsc d:\users\matlab\figure003-a
+
+figure(2)
+semilogy(ttt,err,'r:','linewidth',1.5)
+xlabel('t')
+ylabel('absolute error')
+title('error profile due to the stiffness; h = 1/10')
+grid on
+print -depsc d:\users\matlab\figure003-b
+
+figure(3)
+plot(ttt,err001,'b:','linewidth',1.5)
+xlabel('t')
+ylabel('price one error')
+title('error profile due to the stiffness; h = 1/10')
+grid on
+ print -depsc d:\users\matlab\figure003-a2
+
+figure(4)
+semilogy(ttt,err001,'b:','linewidth',1.5)
+xlabel('t')
+ylabel('price one error')
+title('error profile due to the stiffness; h = 1/10')
+grid on
+ print -depsc d:\users\matlab\figure003-b2
+
+figure(5)
+plot(ttt,err002,'m:','linewidth',1.5)
+xlabel('t')
+ylabel('price two error')
+title('error profile due to the stiffness; h = 1/10')
+grid on
+ print -depsc d:\users\matlab\figure003-a3
+
+figure(6)
+semilogy(ttt,err002,'m:','linewidth',1.5)
+xlabel('t')
+ylabel('price two error')
+title('error profile due to the stiffness; h = 1/10')
+grid on
+ print -depsc d:\users\matlab\figure003-b3
+
+
+%% part 2:
+
+clear all;
+
+a0 = 1;
+b0 = 1;
+h = 1/100;
+aa = 1-100*h;
+bb = 1-h/10;
+v = [1 1; 0 999/10];
+vv = inv(v);
+y0 = [1; -1];
+
+nn = 200;
+
+for n = 1:nn
+   time = n*h;
+   a0 = a0*aa;
+   b0 = b0*bb;
+   cc = [ exp(-100*time) 0; 0 exp(-time/10)];
+   dd = [a0 0; 0 b0];
+
+   true = v*cc*vv*y0;
+   appx = v*dd*vv*y0;
+   err1 = true - appx;
+   err(n) = sqrt(err1(1)*err1(1) + err1(2)*err1(2));
+   err001(n) = abs(err1(1));
+   err002(n) = abs(err1(2));
+   ttt(n) = time;
+end
+
+figure(7)
+plot(ttt,err,'r:','linewidth',1.5)
+xlabel('t')
+ylabel('absolute error')
+title('error profile due to the stiffness; h = 1/100')
+grid on
+print -depsc d:\users\matlab\figure003-c
+
+figure(8)
+semilogy(ttt,err,'r:','linewidth',1.5)
+xlabel('t')
+ylabel('absolute error')
+title('error profile due to the stiffness; h = 1/100')
+grid on
+print -depsc d:\users\matlab\figure003-d
+
+
+figure(9)
+plot(ttt,err001,'b:','linewidth',1.5)
+xlabel('t')
+ylabel('price one error')
+title('error profile due to the stiffness; h = 1/10')
+grid on
+ print -depsc d:\users\matlab\figure003-c2
+
+figure(10)
+semilogy(ttt,err001,'b:','linewidth',1.5)
+xlabel('t')
+ylabel('price one error')
+title('error profile due to the stiffness; h = 1/10')
+grid on
+ print -depsc d:\users\matlab\figure003-d2
+
+figure(11)
+plot(ttt,err002,'m:','linewidth',1.5)
+xlabel('t')
+ylabel('price two error')
+title('error profile due to the stiffness; h = 1/10')
+grid on
+ print -depsc d:\users\matlab\figure003-c3
+
+figure(12)
+semilogy(ttt,err002,'m:','linewidth',1.5)
+xlabel('t')
+ylabel('price two error')
+title('error profile due to the stiffness; h = 1/10')
+grid on
+ print -depsc d:\users\matlab\figure003-d3

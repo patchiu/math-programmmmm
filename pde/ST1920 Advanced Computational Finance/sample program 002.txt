@@ -1,0 +1,66 @@
+%% sample program 002
+%% sept 2019 hkbu
+
+clear all;
+
+n = 5;
+a = rand(n,1);
+b = sort(a);
+
+%% to construct a vector of (n+2) x values including the end points
+%% to calculate all mesh steps (they are nonuniform in general)
+x(1) = 0;
+for k = 1:n
+    x(k+1) = b(k);
+    h(k) = x(k+1) - x(k);
+end
+x(n+2) = 1;
+h(n+1) = x(n+2) - x(n+1);
+
+%% to calculate values of y = f(x) at all mesh points
+for k = 1:(n+2)
+    f(k) = sin(pi*x(k));
+end
+
+%% to calculate the forward finite difference
+
+for k = 1:n
+    ff1(k) = (f(k+2)-f(k+1))/h(k+1);
+end
+
+for k = 1:n
+    true(k) = pi*cos(pi*x(k+1));
+end
+
+figure(1)
+plot(b,ff1,'linewidth',2)
+hold on
+plot(b,true,'r:','linewidth',2)
+xlabel('x')
+ylabel('\Delta f and df/dx')
+title('forward difference approximation of first derivative')
+grid on
+hold off
+
+%% now, let us compute the absolute error and relative errors.
+%% to this end, we have the following.
+%% note: the calculation can be simplified by using vector operations.
+%%
+for k = 1:n
+    erra(k) = abs(ff1(k) - true(k));
+    errr(k) = abs(ff1(k) - true(k))/abs(true(k));
+end
+
+figure(2)
+plot(b,erra,'m','linewidth',2)
+xlabel('x')
+ylabel('absolute error')
+title('absolute error of the finite difference approximation')
+grid on
+
+figure(3)
+plot(b,errr,'g','linewidth',2)
+xlabel('x')
+ylabel('relative error')
+title('relative error of the finite difference approximation')
+grid on

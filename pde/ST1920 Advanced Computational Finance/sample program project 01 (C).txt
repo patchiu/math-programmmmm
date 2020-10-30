@@ -1,0 +1,110 @@
+%% sample program project 01 (C)
+%% for solving an initial value problem by explicit, or forward, Euler
+%% finite difference method on nonuniform and uniform meshes, respectively.
+%% oct 2019 tim sheng hkbu
+
+%% we note that the only true solution to the problem is
+%% u(t) = sin(t) + 1.
+
+clear all;            %% always use this command in the beginning
+
+n = 100;               %% try to remove ";" and then see the consequence
+a = rand(n,1);        %% to general n random values in (0, 1)
+x = sort(a);          %% to order the above n values
+
+h0 = 1/(n+1);          %% to calculate the step size h0 for a uniform mesh
+for k = 1:n
+    y(k) = k*h0;       %% to generate a unifrom mesh of n internal points
+end
+
+%% the vectors x and y obtained have n internal mesh points each
+%% and we may need them for plotting our solutions
+
+%% but we need new vectors of (n+2) values each including end points
+%% for calculations (for both nonuniform and unifrom cases)
+
+xx(1) = 0;
+yy(1) = 0;
+u1(1) = 1;     %% the initial condition for nonuniform mesh formula
+u2(1) = 1;     %% the initial condition for uniform mesh formula
+true1(1) = 1;
+true2(1) = 1; 
+for k = 1:n
+    xx(k+1) = x(k);
+    yy(k+1) = y(k);
+    true1(k+1) = sin(x(k))+1;
+    true2(k+1) = sin(y(k))+1; 
+end
+xx(n+2) = 1;
+yy(n+2) = 1;
+true1(n+2) = sin(xx(n+2))+1;
+true2(n+2) = sin(yy(n+2))+1; 
+
+for k = 2:(n+2)                    %% why the index starts at 2 and ends at n+2?
+    h(k) = xx(k) - xx(k-1);        %% -- because xx(1) is the initial position.
+end 
+
+for k = 2:(n+2)                    
+    u1(k) = u1(k-1) + h(k)*cos(xx(k-1));   %% -- solution on nonuniform mesh.
+    u2(k) = u2(k-1) + h0*cos(yy(k-1));     %% -- solution on uniform mesh.
+end                                
+
+
+figure(3)
+plot(xx,u1,'linewidth',1.5)
+hold on
+plot(xx,true1,'r:','linewidth',1.5)
+xlabel('t')
+ylabel('u=u(t)')
+title('my solutions on nonuniform case')
+grid on
+hold off
+
+figure(4)
+plot(yy,u2,'linewidth',1.5)
+hold on
+plot(yy,true2,'r:','linewidth',1.5)
+xlabel('t')
+ylabel('u=u(t)')
+title('my solutions on uniform case')
+grid on
+hold off
+
+
+%% Now, can we see the errors?
+%% let's explore the absolute errors!
+
+errnu = abs(u1 - true1);
+errun = abs(u2 - true2);
+
+
+figure(5)
+plot(xx,errnu,'g:','linewidth',1.5)
+xlabel('x')
+ylabel('absolute error')
+title('my corrected non-uniform case')
+grid on
+
+figure(6)
+plot(yy,errun,'g:','linewidth',1.5)
+xlabel('x')
+ylabel('absolute error')
+title('my corrected uniform case')
+grid on
+
+%% we use the logrithmic scale in y-direction for both errors:
+
+
+figure(7)
+semilogy(xx,errnu,'r:','linewidth',1.5)
+xlabel('x')
+ylabel('absolute error')
+title('my corrected non-uniform case')
+grid on
+
+figure(8)
+semilogy(yy,errun,'r:','linewidth',1.5)
+xlabel('x')
+ylabel('absolute error')
+title('my corrected uniform case')
+grid on

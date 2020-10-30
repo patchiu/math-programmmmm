@@ -1,0 +1,81 @@
+clear all;
+
+a0 = 1;
+b0 = 1;
+h = 2/100;
+aa = 1-100*h;
+bb = 1-h/10;
+v = [1 1; 0 999/10];
+vv = inv(v);
+y0 = [1; -1];
+
+nn = 100;
+
+for n = 1:nn
+  time = n*h;
+   a0 = a0*aa;
+   b0 = b0*bb;
+   cc = [ exp(-100*time) 0; 0 exp(-time/10)];
+   dd = [a0 0; 0 b0];
+   ttt(n) = time;
+   
+
+   true = v*cc*vv;
+   appx = v*dd*vv;
+
+   Cond1_true(n)=cond(true,1)
+   Cond2_true(n)=cond(true,2)
+   Condinf_true(n)=cond(true,inf)
+
+end
+
+
+figure(1)
+plot(ttt,Cond1_true,'r:','linewidth',1.5)
+xlabel('t')
+ylabel('Cond1_true(F(tA)')
+title('Cond1_true(F(tA)); h = 2/100')
+grid on
+print -depsc C:\Users\17212049\figure1
+
+figure(2)
+semilogy(ttt,Cond1_true,'r:','linewidth',1.5)
+xlabel('t')
+ylabel('Cond1_true(F(tA)')
+title('Cond1_true(F(tA)); h = 2/100')
+grid on
+print -depsc C:\Users\17212049\figure2
+
+figure(3)
+plot(ttt,Cond2_true,'r:','linewidth',1.5)
+xlabel('t')
+ylabel('Cond2_true(F(tA)')
+title('Cond2_true(F(tA)); h = 2/100')
+grid on
+print -depsc C:\Users\17212049\figure3
+
+figure(4)
+semilogy(ttt,Cond2_true,'r:','linewidth',1.5)
+xlabel('t')
+ylabel('Cond2_true(F(tA)')
+title('Cond2_true(F(tA)); h = 2/100')
+grid on
+print -depsc C:\Users\17212049\figure4
+
+figure(5)
+plot(ttt,Condinf_true,'r:','linewidth',1.5)
+xlabel('t')
+ylabel('Condinf_true(F(tA)')
+title('Condinf_true(F(tA)); h = 2/100')
+grid on
+print -depsc C:\Users\17212049\figure5
+
+figure(6)
+semilogy(ttt,Condinf_true,'r:','linewidth',1.5)
+xlabel('t')
+ylabel('Condinf_true(F(tA)')
+title('Condinf_true(F(tA)); h = 2/100')
+grid on
+print -depsc C:\Users\17212049\figure6
+
+

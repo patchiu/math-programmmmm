@@ -1,0 +1,51 @@
+%% sample program 001
+%% sept 2019 hkbu
+
+clear all;           %% always use this command in the beginning
+
+n = 5;               %% try to remove ";" and then see the consequence
+a = rand(n,1);       %% to general n random values in (0, 1)
+x = sort(a);         %% to order the above n values
+
+%% now, you have vectors a and b. each has n components
+
+%% to construct a vector of (n+2) x values including the end points
+%% to calculate all mesh steps (they are nonuniform in general)
+
+
+%% to calculate vector of y = sin(pi * x) 
+%% pi = 3.14159... the value is given by Matlab
+for k = 1:n
+    y(k) = sin(pi*x(k));
+end
+
+%% to plot a curve
+
+figure(1)
+plot(x,y)
+xlabel('x')
+ylabel('y')
+title('my first experiment')
+grid on
+
+
+%% to calculate another vector of z = cos(pi * x) 
+%% 
+for k = 1:n
+    z(k) = cos(pi*x(k));
+end
+
+%% to plot both curves for y and z
+
+figure(2)
+plot(x,y)
+hold on
+plot(x,z)
+xlabel('x')
+ylabel('y')
+title('my second experiment')
+grid on
+hold off
+
+%% end of experiment
+%%
